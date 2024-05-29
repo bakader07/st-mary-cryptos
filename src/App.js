@@ -1,13 +1,5 @@
 import {
 	Box,
-	AppBar,
-	Toolbar,
-	Typography,
-	IconButton,
-	Stack,
-	Button,
-	Menu,
-	MenuItem,
 	Paper,
 	Table,
 	TableContainer,
@@ -18,15 +10,13 @@ import {
 	Avatar,
 	Link,
 } from "@mui/material";
-import CurrencyBitcoinIcon from "@mui/icons-material/CurrencyBitcoin";
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
-import BookmarkIcon from "@mui/icons-material/Bookmark";
 import InfoIcon from "@mui/icons-material/Info";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
-import { useState } from "react";
 import { CheckBox } from "@mui/icons-material";
+import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
+import BookmarkIcon from "@mui/icons-material/Bookmark";
+import Navbar from "./components/navbar";
 
 const darkTheme = createTheme({
 	palette: {
@@ -35,76 +25,11 @@ const darkTheme = createTheme({
 });
 
 function App() {
-	const [anchorEl, setAnchorEl] = useState(null);
-	const open = Boolean(anchorEl);
-	const handleClick = (event) => {
-		setAnchorEl(event.currentTarget);
-	};
-	const onClose = (event) => {
-		setAnchorEl(null);
-	};
 	return (
 		<ThemeProvider theme={darkTheme}>
 			<CssBaseline />
 			<>
-				<AppBar position="static" color="primary">
-					<Toolbar>
-						<IconButton
-							aria-label="logo"
-							size="large"
-							edge="start"
-							color="inherit"
-						>
-							<CurrencyBitcoinIcon></CurrencyBitcoinIcon>
-						</IconButton>
-						<Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-							CryptoMary
-						</Typography>
-						<Stack direction="row" spacing={2}>
-							<Button color="inherit" href="/">
-								Home
-							</Button>
-							<Button
-								color="inherit"
-								id="currencies-button"
-								onClick={handleClick}
-								aria-controls={open ? "currencies-menu" : undefined}
-								aria-haspopup="true"
-								aria-expanded={open ? "true" : undefined}
-								endIcon={<KeyboardArrowDownIcon />}
-							>
-								Currencies
-							</Button>
-							<Button color="inherit" href="/about">
-								About
-							</Button>
-						</Stack>
-						<Menu
-							id="currencies-menu"
-							anchorEl={anchorEl}
-							open={open}
-							MenuListProps={{
-								"aria-labeledby": "currencies-button",
-							}}
-							onClose={onClose}
-							anchorOrigin={{
-								vertical: "bottom",
-								horizontal: "right",
-							}}
-							transformOrigin={{
-								vertical: "top",
-								horizontal: "right",
-							}}
-						>
-							<MenuItem component="a" href="/currencies">
-								All Currencies
-							</MenuItem>
-							<MenuItem component="a" href="/watchlist">
-								Watchlist Currencies
-							</MenuItem>
-						</Menu>
-					</Toolbar>
-				</AppBar>
+				<Navbar />
 
 				<Box sx={{ padding: "2rem" }}>
 					<Box
