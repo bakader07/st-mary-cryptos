@@ -1,19 +1,9 @@
-import {
-	Box,
-	Paper,
-	Table,
-	TableContainer,
-	TableHead,
-	TableBody,
-	TableRow,
-	TableCell,
-	Avatar,
-	Link,
-} from "@mui/material";
+import { Box } from "@mui/material";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import Navbar from "./components/navbar";
 import CurrenciesTable from "./components/CurrenciesTable";
+import CurrencyChart from "./components/CurrencyChart";
 
 const darkTheme = createTheme({
 	palette: {
@@ -38,6 +28,15 @@ function App() {
 					</Box>
 
 					<CurrenciesTable />
+
+					<Box
+						sx={{
+							color: "primary.main",
+						}}
+					>
+						<h2>Currency Chart</h2>
+					</Box>
+					<CurrencyChart />
 				</Box>
 			</>
 		</ThemeProvider>
