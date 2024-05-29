@@ -1,5 +1,4 @@
 import {
-	Box,
 	Paper,
 	Table,
 	TableContainer,
@@ -10,37 +9,64 @@ import {
 	Avatar,
 	Link,
 } from "@mui/material";
-import { ThemeProvider, createTheme } from "@mui/material/styles";
-import CssBaseline from "@mui/material/CssBaseline";
-import Navbar from "./components/navbar";
-import CurrenciesTable from "./components/CurrenciesTable";
+import InfoIcon from "@mui/icons-material/Info";
+import { CheckBox } from "@mui/icons-material";
+import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
+import BookmarkIcon from "@mui/icons-material/Bookmark";
 
-const darkTheme = createTheme({
-	palette: {
-		mode: "dark",
-	},
-});
-
-function App() {
+function CurrenciesTable() {
 	return (
-		<ThemeProvider theme={darkTheme}>
-			<CssBaseline />
-			<>
-				<Navbar />
-
-				<Box sx={{ padding: "2rem" }}>
-					<Box
-						sx={{
-							color: "primary.main",
-						}}
-					>
-						<h1>Currencies</h1>
-					</Box>
-
-					<CurrenciesTable />
-				</Box>
-			</>
-		</ThemeProvider>
+		<TableContainer component={Paper}>
+			<Table stickyHeader aria-label="simple table">
+				<TableHead>
+					<TableRow>
+						<TableCell>Logo</TableCell>
+						<TableCell>Name</TableCell>
+						<TableCell>Symbol</TableCell>
+						<TableCell>Current Price</TableCell>
+						<TableCell align="center">Price Change (Last 24H)</TableCell>
+						<TableCell align="center">Watchlist</TableCell>
+						<TableCell align="center">More Details</TableCell>
+					</TableRow>
+				</TableHead>
+				<TableBody>
+					{currencies.map((currency) => (
+						<TableRow
+							href="/here"
+							key={currency.id}
+							sx={{
+								"&:hover": {
+									backgroundColor: "primary.dark",
+								},
+								"&:last-child td, &:last-child th": { border: 0 },
+							}}
+						>
+							<TableCell>
+								<Avatar src={currency.image} />
+							</TableCell>
+							<TableCell>{currency.name}</TableCell>
+							<TableCell>{currency.symbol}</TableCell>
+							<TableCell>{currency.current_price} USD</TableCell>
+							<TableCell align="center">
+								{currency.price_change_percentage_24h}%
+							</TableCell>
+							<TableCell align="center">
+								<CheckBox
+								// icon={<BookmarkBorderIcon />}
+								// checkedIcon={<BookmarkIcon />}
+								// onChange={() => {}}
+								/>
+							</TableCell>
+							<TableCell align="center">
+								<Link href="/chart">
+									<InfoIcon></InfoIcon>
+								</Link>
+							</TableCell>
+						</TableRow>
+					))}
+				</TableBody>
+			</Table>
+		</TableContainer>
 	);
 }
 
@@ -167,4 +193,4 @@ const currencies = [
 	},
 ];
 
-export default App;
+export default CurrenciesTable;
