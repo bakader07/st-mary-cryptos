@@ -1,9 +1,10 @@
-import { Box } from "@mui/material";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import Navbar from "./components/navbar";
-import CurrenciesTable from "./components/CurrenciesTable";
-import CurrencyChart from "./components/CurrencyChart";
+import HomePage from "./pages/HomePage";
+import CurrenciesPage from "./pages/CurrenciesPage";
+import CurrencyDetailsPage from "./pages/CyrrencyDetailsPage";
 
 const darkTheme = createTheme({
 	palette: {
@@ -11,34 +12,25 @@ const darkTheme = createTheme({
 	},
 });
 
+// const router = createBrowserRouter(createRoutesFromElements(<Route index />));
+
 function App() {
 	return (
 		<ThemeProvider theme={darkTheme}>
 			<CssBaseline />
-			<>
-				<Navbar />
+			<Router>
+				<>
+					<Navbar />
 
-				<Box sx={{ padding: "2rem" }}>
-					<Box
-						sx={{
-							color: "primary.main",
-						}}
-					>
-						<h1>Currencies</h1>
-					</Box>
-
-					<CurrenciesTable />
-
-					<Box
-						sx={{
-							color: "primary.main",
-						}}
-					>
-						<h2>Currency Chart</h2>
-					</Box>
-					<CurrencyChart />
-				</Box>
-			</>
+					<Routes>
+						<Route path="/" element={<HomePage />} />
+						<Route path="/currencies" element={<CurrenciesPage />} />
+						<Route path="/currencies/:id" element={<CurrencyDetailsPage />} />
+						<Route path="/watchlist" element={<CurrenciesPage />} />
+						<Route path="/about" element={<HomePage />} />
+					</Routes>
+				</>
+			</Router>
 		</ThemeProvider>
 	);
 }

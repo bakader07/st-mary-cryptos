@@ -10,6 +10,7 @@ import {
 } from "chart.js";
 import { Line } from "react-chartjs-2";
 import { useEffect, useState } from "react";
+import { Box } from "@mui/material";
 
 ChartJS.register(
 	CategoryScale,
@@ -21,7 +22,8 @@ ChartJS.register(
 	Legend
 );
 
-function CurrencyChart() {
+function CurrencyChart(props) {
+	const id = props.coinId;
 	const options = {
 		responsive: true,
 		plugins: {
@@ -35,6 +37,7 @@ function CurrencyChart() {
 		},
 	};
 	const [period, setPeriod] = useState(30);
+	const [time, setTime] = useState(Date.now());
 	const [data, setData] = useState({
 		// labels: prices.map((el, index) => `${period - index} days ago`),
 		labels: [],
@@ -49,11 +52,18 @@ function CurrencyChart() {
 		],
 	});
 
+	// useEffect(() => {
+	// 	const interval = setInterval(() => setTime(Date.now()), 1000);
+	// 	return () => {
+	// 		clearInterval(interval);
+	// 	};
+	// }, []);
+
 	useEffect(() => {
 		const fetchPrices = async () => {
 			try {
 				const response = await fetch(
-					`https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=${period}&interval=daily`,
+					`https://api.coingecko.com/api/v3/coins/${id}/market_chart?vs_currency=usd&days=${period}&interval=daily`,
 					{
 						method: "GET",
 						headers: {
@@ -70,7 +80,7 @@ function CurrencyChart() {
 				const res = await response.json();
 				console.log(res);
 				console.log(res.prices);
-				setData(res.prices);
+				// setData(res.prices);
 				setData({
 					labels: res.prices.map((el, index) =>
 						period - index > 0 ? `${period - index} days ago` : "Today"
@@ -110,7 +120,11 @@ function CurrencyChart() {
 	// 		.catch((err) => console.error(err));
 	// }, []);
 
-	return <>{data && <Line options={options} data={data}></Line>}</>;
+	return (
+		<Box sx={{ padding: "2rem" }}>
+			{data && <Line options={options} data={data}></Line>}
+		</Box>
+	);
 }
 
 // const prices = [
