@@ -96,7 +96,7 @@ function CurrenciesTable() {
 								/>
 							</TableCell>
 							<TableCell align="center">
-								<Link href="/chart">
+								<Link href={`/currencies/${currency.id}`}>
 									<InfoIcon></InfoIcon>
 								</Link>
 							</TableCell>
