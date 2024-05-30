@@ -24,6 +24,8 @@ ChartJS.register(
 
 function CurrencyChart(props) {
 	const id = props.coinId;
+	const intervals = 24;
+	const [time, setTime] = useState(Date.now());
 	const options = {
 		responsive: true,
 		plugins: {
@@ -32,12 +34,10 @@ function CurrencyChart(props) {
 			},
 			title: {
 				display: true,
-				text: "Last 30 Days Prices History",
+				text: "Real-Time Prices History",
 			},
 		},
 	};
-	const [period, setPeriod] = useState(30);
-	const [time, setTime] = useState(Date.now());
 	const [data, setData] = useState({
 		// labels: prices.map((el, index) => `${period - index} days ago`),
 		labels: [],
@@ -52,18 +52,11 @@ function CurrencyChart(props) {
 		],
 	});
 
-	// useEffect(() => {
-	// 	const interval = setInterval(() => setTime(Date.now()), 1000);
-	// 	return () => {
-	// 		clearInterval(interval);
-	// 	};
-	// }, []);
-
 	useEffect(() => {
 		const fetchPrices = async () => {
 			try {
 				const response = await fetch(
-					`https://api.coingecko.com/api/v3/coins/${id}/market_chart?vs_currency=usd&days=${period}&interval=daily`,
+					`https://api.coingecko.com/api/v3/coins/${id}/market_chart?vs_currency=usd&days=1`,
 					{
 						method: "GET",
 						headers: {
@@ -79,16 +72,15 @@ function CurrencyChart(props) {
 
 				const res = await response.json();
 				console.log(res);
-				console.log(res.prices);
+				const history = res.prices.slice(-(intervals + 1));
+				console.log(history);
 				// setData(res.prices);
 				setData({
-					labels: res.prices.map((el, index) =>
-						period - index > 0 ? `${period - index} days ago` : "Today"
-					),
+					labels: history.map((el) => new Date(el[0]).toLocaleTimeString()),
 					datasets: [
 						{
 							label: "Price (USD)",
-							data: res.prices.map((el) => el[1]),
+							data: history.map((el) => el[1]),
 							borderColor: "rgb(255, 99, 132)",
 							backgroundColor: "rgba(255, 99, 132, 0.5)",
 						},
@@ -99,26 +91,59 @@ function CurrencyChart(props) {
 			}
 		};
 		fetchPrices();
-	}, [period]);
-	// useEffect(() => {
-	// 	fetch(
-	// 		"https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=7&interval=daily",
-	// 		{
-	// 			method: "GET",
-	// 			headers: {
-	// 				accept: "application/json",
-	// 				"x-cg-demo-api-key": "CG-f4toFwbsfaHqahWfdLBhNNLL",
-	// 			},
-	// 		}
-	// 	)
-	// 		.then((response) => response.json())
-	// 		.then((results) => {
-	// 			console.log(results);
-	// 			console.log(results["prices"]);
-	// 			// setData(results["prices"]);
-	// 		})
-	// 		.catch((err) => console.error(err));
-	// }, []);
+	}, [id]);
+
+	useEffect(() => {
+		const fetchPrice = async () => {
+			try {
+				const response = await fetch(
+					`https://api.coingecko.com/api/v3/coins/${id}/market_chart?vs_currency=usd&days=1`,
+					{
+						method: "GET",
+						headers: {
+							accept: "application/json",
+							"x-cg-demo-api-key": "CG-f4toFwbsfaHqahWfdLBhNNLL",
+						},
+					}
+				);
+
+				if (!response.ok) {
+					throw new Error("Network response was not ok");
+				}
+
+				const res = await response.json();
+				console.log(res);
+				const newPrice = res.prices.pop();
+				console.log(newPrice);
+				const newLabels = [...data.labels];
+				const newData = [...data.datasets[0].data];
+				newLabels.push(new Date(newPrice[0]).toLocaleTimeString());
+				newLabels.shift();
+				newData.push(newPrice[1]);
+				newData.shift();
+				setData({
+					labels: newLabels,
+					datasets: [
+						{
+							label: "Price (USD)",
+							data: newData,
+							borderColor: "rgb(255, 99, 132)",
+							backgroundColor: "rgba(255, 99, 132, 0.5)",
+						},
+					],
+				});
+			} catch (error) {
+				console.error(error);
+			}
+		};
+
+		const interval = setInterval(() => {
+			fetchPrice();
+		}, 10000); //* THIS DETERMINES THE PERIOD TO UPDATE
+		// }, 300000);
+
+		return () => clearInterval(interval);
+	}, [id, data]);
 
 	return (
 		<Box sx={{ padding: "2rem" }}>
@@ -126,16 +151,5 @@ function CurrencyChart(props) {
 		</Box>
 	);
 }
-
-// const prices = [
-// 	[1716422400000, 69181.20085677762],
-// 	[1716508800000, 67906.46534276106],
-// 	[1716595200000, 68539.91646552991],
-// 	[1716681600000, 69268.44558973772],
-// 	[1716768000000, 68508.83110875699],
-// 	[1716854400000, 69367.23871755725],
-// 	[1716940800000, 68316.63588049631],
-// 	[1716996193000, 67706.88328432705],
-// ];
 
 export default CurrencyChart;

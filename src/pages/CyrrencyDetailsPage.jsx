@@ -1,6 +1,7 @@
 import { useParams } from "react-router-dom";
 import { Box, Avatar } from "@mui/material";
 import CurrencyChart from "../components/CurrencyChart";
+import CurrencyRealtimeChart from "../components/CurrencyRealtimeChart";
 import { useState, useEffect } from "react";
 
 function CoinData(props) {
@@ -50,7 +51,7 @@ function CurrencyDetailsPage() {
 			}
 		};
 		fetchCurrencies();
-	}, []);
+	}, [id]);
 
 	return (
 		<Box sx={{ padding: "2rem" }}>
@@ -61,6 +62,8 @@ function CurrencyDetailsPage() {
 			</Box>
 
 			<CurrencyChart coinId={id} />
+
+			<CurrencyRealtimeChart coinId={id} />
 		</Box>
 	);
 }
