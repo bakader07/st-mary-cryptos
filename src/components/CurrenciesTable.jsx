@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
 	Paper,
 	Table,
@@ -16,6 +17,7 @@ import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
 
 function CurrenciesTable() {
+	const navigate = useNavigate();
 	const [currencies, setCurrencies] = useState([]);
 	const [vscurrency, setVsCurrency] = useState("usd");
 
@@ -58,14 +60,16 @@ function CurrenciesTable() {
 						<TableCell>Current Price</TableCell>
 						<TableCell align="center">Price Change (Last 24H)</TableCell>
 						<TableCell align="center">Watchlist</TableCell>
-						<TableCell align="center">More Details</TableCell>
+						{/* <TableCell align="center">More Details</TableCell> */}
 					</TableRow>
 				</TableHead>
 				<TableBody>
 					{currencies.map((currency) => (
 						<TableRow
-							href="/here"
 							key={currency.id}
+							onClick={() => {
+								navigate(`/currencies/${currency.id}`);
+							}}
 							sx={{
 								"&:hover": {
 									backgroundColor: "primary.dark",
@@ -95,11 +99,11 @@ function CurrenciesTable() {
 									}}
 								/>
 							</TableCell>
-							<TableCell align="center">
+							{/* <TableCell align="center">
 								<Link href={`/currencies/${currency.id}`}>
 									<InfoIcon></InfoIcon>
 								</Link>
-							</TableCell>
+							</TableCell> */}
 						</TableRow>
 					))}
 				</TableBody>
