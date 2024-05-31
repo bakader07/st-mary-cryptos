@@ -1,7 +1,7 @@
 import { Box } from "@mui/material";
 import WatchlistCurrenciesTable from "../components/WatchlistCurrenciesTable";
 
-function CurrenciesPage() {
+function WatchlistPage() {
 	return (
 		<Box sx={{ padding: "2rem" }}>
 			<Box
@@ -17,4 +17,4 @@ function CurrenciesPage() {
 	);
 }
 
-export default CurrenciesPage;
+export default WatchlistPage;
