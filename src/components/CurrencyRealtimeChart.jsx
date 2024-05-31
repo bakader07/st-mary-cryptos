@@ -24,8 +24,8 @@ ChartJS.register(
 
 function CurrencyChart(props) {
 	const id = props.coinId;
-	const intervals = 24;
-	const [time, setTime] = useState(Date.now());
+	const intervals = 30;
+	// const [time, setTime] = useState(Date.now());
 	const options = {
 		responsive: true,
 		plugins: {
@@ -115,23 +115,27 @@ function CurrencyChart(props) {
 				console.log(res);
 				const newPrice = res.prices.pop();
 				console.log(newPrice);
-				const newLabels = [...data.labels];
-				const newData = [...data.datasets[0].data];
-				newLabels.push(new Date(newPrice[0]).toLocaleTimeString());
-				newLabels.shift();
-				newData.push(newPrice[1]);
-				newData.shift();
-				setData({
-					labels: newLabels,
-					datasets: [
-						{
-							label: "Price (USD)",
-							data: newData,
-							borderColor: "rgb(255, 99, 132)",
-							backgroundColor: "rgba(255, 99, 132, 0.5)",
-						},
-					],
-				});
+				if (
+					newPrice !== data.datasets[0].data[data.datasets[0].data.length - 1]
+				) {
+					const newLabels = [...data.labels];
+					const newData = [...data.datasets[0].data];
+					newLabels.push(new Date().toLocaleTimeString());
+					newLabels.shift();
+					newData.push(newPrice[1]);
+					newData.shift();
+					setData({
+						labels: newLabels,
+						datasets: [
+							{
+								label: "Price (USD)",
+								data: newData,
+								borderColor: "rgb(255, 99, 132)",
+								backgroundColor: "rgba(255, 99, 132, 0.5)",
+							},
+						],
+					});
+				}
 			} catch (error) {
 				console.error(error);
 			}

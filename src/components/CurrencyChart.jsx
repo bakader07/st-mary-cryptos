@@ -37,7 +37,7 @@ function CurrencyChart(props) {
 		},
 	};
 	const [period, setPeriod] = useState(30);
-	const [time, setTime] = useState(Date.now());
+	// const [time, setTime] = useState(Date.now());
 	const [data, setData] = useState({
 		// labels: prices.map((el, index) => `${period - index} days ago`),
 		labels: [],
@@ -99,7 +99,7 @@ function CurrencyChart(props) {
 			}
 		};
 		fetchPrices();
-	}, [period]);
+	}, [id, period]);
 	// useEffect(() => {
 	// 	fetch(
 	// 		"https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=7&interval=daily",
