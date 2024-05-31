@@ -102,6 +102,7 @@ function CurrenciesTable() {
 									onClick={(event) => {
 										event.stopPropagation();
 									}}
+									defaultChecked={watchList.includes(currency.id)}
 								/>
 							</TableCell>
 							{/* <TableCell align="center">
