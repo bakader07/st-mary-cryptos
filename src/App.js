@@ -3,6 +3,7 @@ import { ThemeProvider, createTheme } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import Navbar from "./components/navbar";
 import HomePage from "./pages/HomePage";
+import WatchlistPage from "./pages/WatchlistPage";
 import CurrenciesPage from "./pages/CurrenciesPage";
 import CurrencyDetailsPage from "./pages/CyrrencyDetailsPage";
 
@@ -26,7 +27,7 @@ function App() {
 						<Route path="/" element={<HomePage />} />
 						<Route path="/currencies" element={<CurrenciesPage />} />
 						<Route path="/currencies/:id" element={<CurrencyDetailsPage />} />
-						<Route path="/watchlist" element={<CurrenciesPage />} />
+						<Route path="/watchlist" element={<WatchlistPage />} />
 						<Route path="/about" element={<HomePage />} />
 					</Routes>
 				</>

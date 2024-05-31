@@ -15,11 +15,13 @@ import {
 import InfoIcon from "@mui/icons-material/Info";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
+import { useLocalStorage } from "../useLocalStorage";
 
 function CurrenciesTable() {
 	const navigate = useNavigate();
 	const [currencies, setCurrencies] = useState([]);
 	const [vscurrency, setVsCurrency] = useState("usd");
+	const [watchList, setWatchList] = useLocalStorage("watchlist", []);
 
 	useEffect(() => {
 		const fetchCurrencies = async () => {
@@ -94,8 +96,11 @@ function CurrenciesTable() {
 									key={`check${currency.id}`}
 									icon={<BookmarkBorderIcon />}
 									checkedIcon={<BookmarkIcon />}
-									onChange={() => {
-										console.log(`check${currency.id}`);
+									onChange={() =>
+										handleWatchlistClick(currency.id, watchList, setWatchList)
+									}
+									onClick={(event) => {
+										event.stopPropagation();
 									}}
 								/>
 							</TableCell>
@@ -111,6 +116,24 @@ function CurrenciesTable() {
 		</TableContainer>
 	);
 }
+
+const handleWatchlistClick = (id, watchList, setWatchList) => {
+	console.log(`check${id}`);
+	if (watchList.includes(id)) {
+		// watchList.pop();
+		const index = watchList.indexOf(id);
+		if (index > -1) {
+			// only splice array when item is found
+			watchList.splice(index, 1); // 2nd parameter means remove one item only
+		}
+		console.log(watchList);
+		setWatchList(watchList);
+	} else {
+		watchList.push(id);
+		console.log(watchList);
+		setWatchList(watchList);
+	}
+};
 
 // const currencies = [
 // 	{
